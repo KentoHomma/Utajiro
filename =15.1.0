@@ -1,0 +1,2 @@
+Requirement already satisfied: virtualenv in /usr/local/lib/python2.7/site-packages
+Requirement already satisfied: setuptools>=18.0.0 in /usr/local/lib/python2.7/site-packages (from virtualenv)

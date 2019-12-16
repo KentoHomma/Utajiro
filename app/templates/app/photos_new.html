@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+ <div class="top-wrapper">
+      <div class="container">
+        
+<div class="phots_new">
+<form action="{% url 'app:photos_new' %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+            <h2>新規投稿</h2>
+            <br>
+            
+            <div class="form-category">
+            <lavel>店舗名</lavel><br>
+            {{ form.category }}
+            </div>
+            
+            <div class="form-title">
+            <lavel>タイトル</lavel><br>
+            {{ form.title }}
+            </div>
+            
+            <div class="form-story">
+            <lavel>コメント</lavel><br>
+            {{ form.comment }}
+            </div>
+            
+            <div class="form-image">
+            <lavel>画像(任意)</lavel><br>
+            {{ form.image }}
+            </div>
+            <br>
+            
+            <div class="send">
+            <button type="submit" class="btn">投稿</button>
+            </div>
+</form>
+</div>
+
+</div>
+</div>
+
+{% endblock %}

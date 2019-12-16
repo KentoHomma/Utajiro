@@ -1,0 +1,28 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<div class="top-wrapper">
+<div class="signin">
+<form method="post" action="{% url 'app:signup' %}">{% csrf_token %}
+    <h2>ユーザー新規登録</h2><br>
+    <label>ユーザー名：  　　</label>
+    {{ form.username }}
+    {{ form.username.errors }}
+    <br>
+    <label>パスワード：  　　</label>
+    {{ form.password1 }}
+    {{ form.password1.errors }}
+    <br>
+    <label>パスワード(確認)：</label>
+    {{ form.password2 }}
+    {{ form.password2.errors }}
+    <br>
+    <br>
+    <div class="send">
+    <input type="submit" value="登録">
+    </div>
+</form>
+</div>
+</div>
+{% endblock %}
