@@ -6,7 +6,24 @@ from django import forms
 from . import models
 
 
-class ProfileEditForm(forms.ModelForm):
+from django.contrib.auth.forms import (
+    AuthenticationForm, UserCreationForm, PasswordChangeForm
+)
+from django.contrib.auth import get_user_model
+
+
+
+
+class MyPasswordChangeForm(PasswordChangeForm):
+    """パスワード変更フォーム"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
+
+class ProfileEditForm(ModelForm):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # 全てのフィールドを必須にする
@@ -14,10 +31,11 @@ class ProfileEditForm(forms.ModelForm):
             self.fields[k].required = True
 
     class Meta:
-        model = models.User
+        model = models.UserInfoEdit
         fields = (
             'username',
-            'password',
+            'icon',
+            'introduction'
         )
         
 

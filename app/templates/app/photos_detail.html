@@ -17,6 +17,7 @@
 <h2>{{ photo.title }}</h2>
 <p>{{ photo.comment }}</p>
 
+
 <!-- 削除ボタン -->
 {% if request.user == photo.user %}
 <form method="post" action="{% url 'app:photos_delete' photo.id %}">{% csrf_token %}

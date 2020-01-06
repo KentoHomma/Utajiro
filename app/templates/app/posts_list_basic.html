@@ -1,0 +1,47 @@
+<div class="posts-wrapper">
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if photos.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ photos.previous_page_number }}&{{ search_params }} aria-label=" Previous ">" <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+
+      </li>
+      {% endif %}
+
+      <li class="page-item"><a class="page-link" href="">{{ photos.number }}</a></li>
+
+      {% if photos.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ photos.next_page_number }}&{{ search_params }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+
+
+
+ {% for photo in photos %}
+<div class="photo">
+    <a href="{% url 'app:photos_detail' photo.id %}">
+          {% if photo.image %}
+            <img src="{{ photo.image.url }}" class="photo-img">
+          {% else %}
+            <img src="https://kentohomma-first-bucket.s3-ap-northeast-1.amazonaws.com/ramen0I9A9583_TP_V.jpg" class="photo-img">
+          {% endif %}
+        </a>
+    <div class="photo-info">
+        <a href="{% url 'app:photos_category' category=photo.category %}" class="category">{{ photo.category }}</a>
+        <a href="{% url 'app:users_detail' photo.user.id %}">@{{ photo.user }}</a>
+        <div class="created_at">{{photo.created_at}}</div>
+    </div>
+</div>
+{% endfor %}
+<div class="clear"></div>
+  
+</div>

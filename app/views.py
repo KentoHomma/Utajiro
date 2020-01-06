@@ -18,16 +18,40 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
+from django.http import HttpResponseRedirect
 
 from . import forms
 
 
 
 
+from django.contrib.auth.views import (
+    LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
+)
+from django.urls import reverse_lazy
+from .forms import (
+    MyPasswordChangeForm
+)
+
+
+
+class PasswordChange(PasswordChangeView):
+    """パスワード変更ビュー"""
+    form_class = MyPasswordChangeForm
+    success_url = reverse_lazy('app:password_change_done')
+    template_name = 'app/password_change.html'
+
+
+class PasswordChangeDone(PasswordChangeDoneView):
+    """パスワード変更しました"""
+    template_name = 'app/password_change_done.html'
+
+
+
 #ユーザー情報関連
 def users_detail(request, pk):
     user =get_object_or_404(User, pk=pk)
-    photos = user.photo_set.all().order_by('-created_at')
+    photos = user.photo_set.all().filter(pk__gte=40).order_by('-created_at')
     return render(request, 'app/users_detail.html', {'user': user, 'photos':photos,})
     
 
@@ -39,7 +63,7 @@ def users_detail(request, pk):
 @login_required
 def mypage(request):
     user = request.user
-    photos = user.photo_set.all().order_by('-created_at')
+    photos = user.photo_set.all().filter(pk__gte=40).order_by('-created_at')
     return render(request, 'app/mypage.html',
                             {'user': user,
                              'photos':photos,})
@@ -58,7 +82,7 @@ def mypage_edit(request):
                             
 
 def index(request):
-    photos = Photo.objects.all().order_by('-created_at')
+    photos = Photo.objects.all().filter(pk__gte=40).order_by('-created_at')
     #return render(request, 'app/index.html', {'photos': photos})
     
     params = request.GET.copy()
@@ -82,7 +106,7 @@ def index(request):
                                 
 
 def posts_list(request):
-    photos = Photo.objects.all().order_by('-created_at')
+    photos = Photo.objects.all().filter(pk__gte=40).order_by('-created_at')
     #return render(request, 'app/index.html', {'photos': photos})
     
     params = request.GET.copy()
@@ -103,23 +127,36 @@ def posts_list(request):
     return render(request, 'app/posts_list.html',
                                 {'photos': photos,
                                 'search_params': search_params,})
-                                
-def posts_list_new(request):
-    photos = Photo.objects.all().order_by('-created_at')
-    #return render(request, 'app/index.html', {'photos': photos})
-    
-    paginator = Paginator(photos, 3)
-        
-    
-    return render(request, 'app/posts_list.html',
-                                {'photos': photos})
-                                
-
-
 
                                 
 def shops_list(request):
-    photos = Photo.objects.all().order_by('-created_at')
+    photos = Photo.objects.all().filter(pk__lt=40).order_by('created_at')
+    #return render(request, 'app/index.html', {'photos': photos})
+    
+    params = request.GET.copy()
+    if 'page' in params:
+        page = params['page']
+        del params['page']
+    else:
+        page = 1
+    search_params = params.urlencode()
+    
+    paginator = Paginator(photos, 4)
+        
+    try:
+        photos = paginator.page(page)
+    except (EmptyPage, PageNotAnInteger):
+        photos = paginator.page(1)
+    
+    return render(request, 'app/shops_list.html',
+                                {'photos': photos,
+                                'search_params': search_params,})
+                                
+           
+
+                                
+def shops_detail(request):
+    photos = Photo.objects.all().filter(pk__gte=40).order_by('-created_at')
     #return render(request, 'app/index.html', {'photos': photos})
     
     params = request.GET.copy()
@@ -137,7 +174,7 @@ def shops_list(request):
     except (EmptyPage, PageNotAnInteger):
         photos = paginator.page(1)
     
-    return render(request, 'app/shops_list.html',
+    return render(request, 'app/shops_detail.html',
                                 {'photos': photos,
                                 'search_params': search_params,})
                                 
@@ -189,8 +226,30 @@ def photos_delete(request, pk):
     
 
 def photos_category(request, category):
-    # titleがURLの文字列と一致するcategoryインスタンスを取得
     category = Category.objects.get(title=category)
-    #取得したcategoryに属するphoto一覧を取得
-    photos = Photo.objects.filter(category=category).order_by('-created_at')
-    return render(request, 'app/index.html', {'photos':photos, 'category':category})
+    photos = Photo.objects.filter(category=category).filter(pk__gte=40).order_by('-created_at')
+    return render(request, 'app/shops_detail.html', {'photos':photos, 'category':category})
+
+'''
+@login_required
+def like(request, *args, **kwargs):
+    photo = Photo.objects.get(id=kwargs['photo_id'])
+    is_like = Like.objects.filter(user=request.user).filter(photo=photo).count()
+    # unlike
+    if is_like > 0:
+        liking = Like.objects.get(post__id=kwargs['post_id'], user=request.user)
+        liking.delete()
+        photo.like_num -= 1
+        photo.save()
+        messages.warning(request, 'いいねを取り消しました')
+        return redirect(reverse_lazy('app:photos_detail', kwargs={'photo_id': kwargs['photo_id']}))
+    # like
+    photo.like_num += 1
+    photo.save()
+    like = Like()
+    like.user = request.user
+    like.photo = photo
+    like.save()
+    messages.success(request, 'いいね！しました')
+    return HttpResponseRedirect(reverse_lazy('app:photos_detail', kwargs={'photo_id': kwargs['photo_id']}))
+'''

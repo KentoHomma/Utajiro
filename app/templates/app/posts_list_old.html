@@ -1,18 +1,15 @@
 <div class="posts-wrapper">
-    <h3>新着投稿</h3>
     {% for photo in photos %}
     <div class="photo">
-        <a href="{% url 'app:photos_detail' photo.id %}">
-        {% if photo.image %}
+        <a href="{% url 'app:photos_category' category=photo.category %}">
+          {% if photo.image %}
             <img src="{{ photo.image.url }}" class="photo-img">
-        {% else %}
+          {% else %}
             <img src="https://kentohomma-first-bucket.s3-ap-northeast-1.amazonaws.com/ramen0I9A9583_TP_V.jpg" class="photo-img">
-        {% endif %}
+          {% endif %}
         </a>
         <div class="photo-info">
             <a href="{% url 'app:photos_category' category=photo.category %}" class="category">{{ photo.category }}</a>
-            <a href="{% url 'app:users_detail' photo.user.id %}">@{{ photo.user }}</a>
-            <div class="created_at">{{photo.created_at}}</div>
         </div>
     </div>
     {% endfor %}

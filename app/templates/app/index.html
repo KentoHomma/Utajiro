@@ -1,43 +1,37 @@
-{% extends 'app/base.html' %}
+{% extends 'app/base.html' %} {% block content %}
 
-{% block content %}
-
-    <div class="top-wrapper">
-      <div class="container">
-        <h1></h1>
-        <h1>―――――あなただけの詩二郎を共有しよう。<h1>
+<div class="top-wrapper">
+  <div class="container">
+    <h1>あなただけの詩二郎を共有しよう。
         <div class="btn-wrapper">
           <a href="#" class="btn facebook"><span class="fa fa-facebook"></span>Facebookでシェア</a>
           <a href="#" class="btn twitter"><span class="fa fa-twitter"></span>Twitterでシェア</a>
-        </div>
-      </div>
-    </div>
-    
-{% if category %}
-    <h2>カテゴリー：{{ category.title }} の検索結果</h2>
-{% endif %}
+        </div></h1>
+  </div>
+</div>
 
 <div class="aboutsite-wrapper">
-    <div class="heading">
-        <h2>詩二郎(うたじろう)とは？</h2><br>
-            <p>二郎〇〇店にまつわる詩を共有するSNSです。</p>
-            <p></p>
-            <p>・二郎〇〇店にまつわる思い出や思い入れ</p>
-            <p>・二郎〇〇店にまつわる自作のポエム</p>
-            <p>・二郎〇〇店の二郎にピッタリの歌詞</p>
-            <p></p>
-            <p>などなど、思い思いの詩二郎を自由に投稿してください。</p>
-    </div>
+  <div class="heading">
+    <h3>詩二郎(うたじろう)とは？</h3><br>
+    <p>二郎〇〇店にまつわる詩を共有するSNSです。</p>
+    <p></p>
+    <p>・二郎〇〇店にまつわる思い出や思い入れ</p>
+    <p>・二郎〇〇店にまつわる自作のポエム</p>
+    <p>・二郎〇〇店の二郎にピッタリの歌詞</p>
+    <p></p>
+    <p>などなど、思い思いの詩二郎を自由に投稿してください。</p>
+  </div>
 </div>
+
 {% include 'app/posts_list_new.html' %}
 
-    <div class="message-wrapper">
-      <div class="container">
-        <div class="heading">
-          <h3>さぁ、あなたも詩二郎に投稿しましょう！</h3>
-        </div>
-        <span class="btn message">新規登録して投稿する</span>
-      </div>
+<div class="message-wrapper">
+  <div class="container">
+    <div class="heading">
+      <h3>さぁ、あなたも詩二郎に投稿しましょう！</h3>
     </div>
+    <span class="btn message">新規登録して投稿する</span>
+  </div>
+</div>
 
 {% endblock %}

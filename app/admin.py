@@ -1,12 +1,14 @@
 from django.contrib import admin
 from .models import Category, Photo
 
+
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'title')
     list_display_links = ('id', 'title')
 
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'user')
+    list_display = ('id', 'title', 'user','created_at')
     list_display_links = ('id', 'title')
 
 admin.site.register(Category, CategoryAdmin)

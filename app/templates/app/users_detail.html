@@ -25,7 +25,7 @@
 
         {% if photos.count != 0 %}
         <h2>投稿：<strong>{{ photos.count }}</strong>件</h2>
-        {% include 'app/posts.html' %} {% else %} {% if user == request.user %}
+        {% include 'app/posts_list_basic.html' %} {% else %} {% if user == request.user %}
         <p>@{{ user.username }}さんはまだ投稿していません。</p>
         <p>初めての投稿をしてみましょう！</p>
         {% else %}

@@ -2,14 +2,13 @@
 
 <div class="top-wrapper">
     <div class="container">
-        <h1></h1>
-        <h1>マイページ
-        </h1>
+        <h1>マイページ</h1>
     </div>
 </div>
+
 <table>
     <div class="heading">
-    <h2>登録情報</h2>
+    <h3>登録情報</h3>
     </div>
     <tr>
         <th>ユーザー名：</th>
@@ -19,24 +18,27 @@
     </tr>
     <tr>
         <th>アイコン：</th>
-        <td><img src="https://kentohomma-first-bucket.s3-ap-northeast-1.amazonaws.com/2.jpg" class="profile-img"></td><br>
+        <td>{{ userinfoedit.icon }}</td><br>
     </tr>
     <tr>
         <th>自己紹介：</th>
-        <td>ここに自己紹介をレンダリングする。あとで長い文章でも大丈夫かのテストもしなきゃね。</td>
+        <td>{{ userinfoedit.introduction}}</td>
     </tr>
 </table>
 
-<a href="{% url 'app:mypage_edit' %}">
-        <span class="btn message">さっそく投稿する</span>
-        </a>
+<div class="mypage_edit">
+<a href="{% url 'app:mypage_edit' %}"><span class="btn">プロフィール編集</span></a>
+<a href="{% url 'app:password_change' %}"><span class="btn">パスワードの変更</span></a>
+</div>
 
 <div class="message-wrapper">
-    <div class="container">
         <div class="heading">
             {% if photos.count != 0 %}
-            <h2>投稿：<strong>{{ photos.count }}</strong>件</h2>
-            {% include 'app/posts.html' %} {% else %} {% if user == request.user %}
+            <div class="heading">
+            <h3>投稿：<strong>{{ photos.count }}</strong>件</h3>
+            </div>
+            {% include 'app/posts_list_basic.html' %}
+            {% else %} {% if user == request.user %}
             <h3>あなたはまだ投稿していません。</h3><br>
             <h3>初めての投稿をしてみましょう！</h3><br>
             <a href="{% url 'app:photos_new' %}">
@@ -47,6 +49,5 @@
             {% endif %} {% endif %}
             
         </div>
-    </div>
 </div>
 {% endblock %}
